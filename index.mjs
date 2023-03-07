@@ -4,6 +4,7 @@ window.setInterval(timeloop, 1000);
 const options = {month: "long"};
 let startUp = true;
 let impTime = [];
+let dateEnd = "";
 
 
 function timeloop()  {
@@ -14,7 +15,7 @@ function timeloop()  {
   let hour = date.getHours();
   let min = date.getMinutes();
   let sec = date.getSeconds();
-  time.textContent =  `${addedZero(hour)}:${addedZero(min)}:${addedZero(sec)} - ${addedZero(day)} ${month}`;
+  time.textContent =  `${addedZero(hour)}:${addedZero(min)}:${addedZero(sec)} - ${addedZero(day)}${dateEnd} ${month}`;
   if(startUp == true){
     timeUpdate(hour,min,sec,day,month);
     startUp = false;
@@ -40,11 +41,13 @@ function TimeSet(hour,min,sec,day){
   let tempS = sec
   let tempD = day-1;
   tempD = tempD*4;
+ 
   
   while(start = true){
     if(tempH >= 6){
       tempD++;
       tempH -=6;
+
     }
     if(tempM >= 15){
       HTA ++;
@@ -68,6 +71,7 @@ function timeUpdate(hour, min, sec, day, month){
   
 
   impTime =TimeSet(hour,min,sec,day); 
+  endOfDate();
   
   let ISec = impTime[2];
   let IMin = impTime[1];
@@ -88,10 +92,12 @@ function timeUpdate(hour, min, sec, day, month){
       IMin=0;
     }
     if(IHour >=24){
+      impTime[3]++;
       IHour= 0;
+      endOfDate();
     }
-    
-    timeUp.textContent =  `${addedZero(IHour)}:${addedZero(IMin)}:${addedZero(ISec)} - ${addedZero(impTime[3])} ${month}`;
+
+    timeUp.textContent =  `${addedZero(IHour)}:${addedZero(IMin)}:${addedZero(ISec)} - ${addedZero(impTime[3])}${dateEnd} ${month}`;
     
   }
   
@@ -105,4 +111,20 @@ function timeUpdate(hour, min, sec, day, month){
     }
   });
   
+}
+function endOfDate() {
+  let stringDate = impTime[3].toString();
+  const arr = stringDate.split("");
+
+  if (arr[1] == 1){
+    dateEnd = "st"
+  }
+  if (arr[1] == 2) {
+    dateEnd = "nd"
+  }
+  if (arr[1] == 3) {
+    dateEnd = "rd"
+  }else{
+    dateEnd = "th"
+  }
 }
